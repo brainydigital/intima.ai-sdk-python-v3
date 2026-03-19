@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "intima-ai-sdk"
+version = "1.0.0"
+description = "Implementação da API do Intima.ai em forma de SDK Client para Python."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["intimai", "intimaai", "intima.ai", "python", "sdk", "api"]
+authors = [
+    {name = "BrainyDigital", email = "contato@brainydigital.com.br"}
+]
+dependencies = [
+    "requests>=2.31.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/brainydigital/intima.ai-sdk-python"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["intimai*"]

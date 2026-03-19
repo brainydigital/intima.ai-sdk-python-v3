@@ -1,0 +1,59 @@
+class EndpointMixin:
+    # SERVICES
+    BUSCAR_ENDPOINT = '/buscar'
+    CADASTRAR_ENDPOINT = '/cadastrar'
+    EXCLUIR_ENDPOINT = '/excluir'
+    ATUALIZAR_ENDPOINT = '/atualizar'
+    SOLICITAR_ENDPOINT = '/solicitar'
+    PRIMEIRA_ETAPA_ENDPOINT = '/primeira-etapa'
+    SEGUNDA_ETAPA_ENDPOINT = '/segunda-etapa'
+    MARCAR_COMO_REVISADA_ENDPOINT = '/marcar-como-revisada'
+    SOLICITAR_ATUALIZACAO_ENDPOINT = '/solicitar-atualizacao'
+    SOLICITAR_CADASTRO_ENDPOINT = '/solicitar-cadastro'
+    SOLICITAR_EXCLUSAO_ENDPOINT = '/solicitar-exclusao'
+
+    # PROCESSES
+    ANDAMENTO_ENDPOINT = '/andamento-processual'
+    CONSULTA_ENDPOINT = '/consulta-processual'
+    CONSULTA_PRE_ANALISE_ENDPOINT = '/pre-consulta-processual'
+    COPIA_ENDPOINT = '/copia-processual'
+    ESCUTA_ENDPOINT = '/escuta-processual'
+    INFORMACAO_ENDPOINT = '/informacao-processual'
+    INTIMACAO_ENDPOINT = '/intimacao'
+    PROTOCOLO_ENDPOINT = '/protocolo-processual'
+    PROTOCOLO_HABILITACAO_ENDPOINT = '/protocolo-habilitacao'
+
+    # SYSTEMS
+    ESAJ_ENDPOINT = '/esaj'
+    EPROC_ENDPOINT = '/eproc'
+    TJRJ_ENDPOINT = '/tjrj'
+    PJE_ENDPOINT = '/pje'
+    PROJUDI_ENDPOINT = '/projudi'
+
+    # AUTHENTICATOR
+    AUTENTICADOR_ENDPOINT = '/autenticador'
+    REGULAR_ENDPOINT = '/regular'
+    CERTIFICADO_ENDPOINT = '/certificado'
+
+    # NOTIFICATIONS
+    NOTIFICACAO_ENDPOINT = '/notificacao'
+    EMAIL_ENDPOINT = '/email'
+    WEBHOOK_ENDPOINT = '/webhook'
+
+    # UTILS
+    CREDITO_ENDPOINT = '/credito'
+    COTACAO_ACOES_ENDPOINT = '/cotacao-acoes'
+    HISTORICO_ENDPOINT = '/historico'
+    SALDO_ENDPOINT = '/saldo'
+    TRANSACAO_ENDPOINT = '/transacao'
+    TRIBUNAL_ENDPOINT = '/tribunal'
+    USUARIO_ENDPOINT = '/usuario'
+    ACAO_ENDPOINT = '/acao'
+    TENTAR_NOVAMENTE_ENDPOINT = '/tentar-novamente'
+    RESULTADO_ENDPOINT = '/resultado'
+    ALTERAR_PARA_REGULAR_ENDPOINT = '/alterar-para-regular'
+    ALTERAR_PARA_CERTIFICADO_ENDPOINT = '/alterar-para-certificado'
+    TIPOS_DOCUMENTO_ENDPOINT = '/tipos-documento'
+    CLASSES_ENDPOINT = '/classes'
+    EVENTOS_ENDPOINT = '/eventos'
+    TIPOS_DOCUMENTO_MENSAGEM_GERAL_ENDPOINT = '/tipos-documento-mensagem-geral'
