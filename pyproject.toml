@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 license = {text = "MIT"}
 keywords = ["intimai", "intimaai", "intima.ai", "python", "sdk", "api"]
 authors = [
-    {name = "BrainyDigital", email = "contato@brainydigital.com.br"}
+    {name = "BrainyDigital", email = "contato@brainy.digital"}
 ]
 dependencies = [
     "requests>=2.31.0",
