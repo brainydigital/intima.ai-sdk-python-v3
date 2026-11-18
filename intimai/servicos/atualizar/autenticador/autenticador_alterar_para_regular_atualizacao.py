@@ -3,18 +3,20 @@ from intimai.servicos.endpoint import EndpointMixin
 
 
 class AutenticadorAlterarParaRegularAtualizacao(ServicoAtualizacao, EndpointMixin):
-    def __init__(self, id: int | str, usuario: str, senha: str):
+    def __init__(self, id: int | str, usuario: str, senha: str, id_certificado: int | str = None):
         self._id = id
         self._usuario = usuario
         self._senha = senha
+        self._id_certificado = id_certificado
 
     def get_endpoint(self) -> str:
-        return f'{self.AUTENTICADOR_ENDPOINT}/{self._id}{self.ALTERAR_PARA_REGULAR_ENDPOINT}'
+        return f'{self.AUTENTICADOR_ENDPOINT}{self.REGULAR_ENDPOINT}/{self._id}{self.ALTERAR_PARA_REGULAR_ENDPOINT}'
 
     def get_request(self) -> dict:
         return {
             'form_params': {
                 'usuario': self._usuario,
                 'senha': self._senha,
+                'certificado_id': self._id_certificado,
             }
         }

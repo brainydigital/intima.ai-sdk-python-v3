@@ -15,4 +15,4 @@ Constante | Valor
 ATIVO | 0
 PASSIVO | 1
 
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

@@ -8,7 +8,7 @@ class AutenticadorAlterarParaCertificadoAtualizacao(ServicoAtualizacao, Endpoint
         self._id_certificado = id_certificado
 
     def get_endpoint(self) -> str:
-        return f'{self.AUTENTICADOR_ENDPOINT}/{self._id}{self.ALTERAR_PARA_CERTIFICADO_ENDPOINT}'
+        return f'{self.AUTENTICADOR_ENDPOINT}{self.CERTIFICADO_ENDPOINT}/{self._id}{self.ALTERAR_PARA_CERTIFICADO_ENDPOINT}'
 
     def get_request(self) -> dict:
         return {

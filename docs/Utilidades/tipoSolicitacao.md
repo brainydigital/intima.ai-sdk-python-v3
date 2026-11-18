@@ -14,4 +14,4 @@ Constante | Valor
 ------------ | -------------
 HABILITACAO_SIMPLES | 0
 
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

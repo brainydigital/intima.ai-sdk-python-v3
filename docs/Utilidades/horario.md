@@ -37,4 +37,4 @@ VINTE_E_DUAS_HORAS | 22:00
 VINTE_E_TRES_HORAS | 23:00
 
 [Voltar ao topo](#utilidade-horário)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

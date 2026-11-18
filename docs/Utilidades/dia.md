@@ -20,4 +20,4 @@ QUINTA_FEIRA | 4
 SEXTA_FEIRA | 5
 SABADO | 6
 
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

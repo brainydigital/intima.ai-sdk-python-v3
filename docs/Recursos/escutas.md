@@ -83,7 +83,7 @@ try:
         Dia.SEXTA_FEIRA
     ]
 
-    # Horários no qual a captura será realizada
+    # Horários no qual a captura será realizada (no máximo 3)
     horarios_de_captura = [
         Horario.DEZ_HORAS,
         Horario.DEZOITO_HORAS
@@ -126,7 +126,7 @@ try:
         Dia.SEXTA_FEIRA
     ]
 
-    # Horários no qual a captura será realizada
+    # Horários no qual a captura será realizada (no máximo 3)
     horarios_de_captura = [
         Horario.DEZ_HORAS,
         Horario.DEZOITO_HORAS
@@ -169,4 +169,4 @@ except Exception as e:
 
 [Voltar ao topo](#recurso-escutas)
 [Voltar a lista da API](../../README.md#recursos)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

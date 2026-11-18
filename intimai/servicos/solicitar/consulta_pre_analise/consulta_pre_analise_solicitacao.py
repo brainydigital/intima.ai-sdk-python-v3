@@ -11,7 +11,6 @@ class ConsultaPreAnaliseSolicitacao(ServicoSolicitacao, EndpointMixin):
         nome_representante: str = '',
         oab: dict = None,
         numero_documento_parte: str = '',
-        token: str = '',
     ):
         self._id_autenticador = id_autenticador
         self._numero_do_processo = numero_do_processo
@@ -19,7 +18,6 @@ class ConsultaPreAnaliseSolicitacao(ServicoSolicitacao, EndpointMixin):
         self._nome_representante = nome_representante
         self._oab = oab
         self._numero_documento_parte = numero_documento_parte
-        self._token = token
 
     def get_endpoint(self) -> str:
         return f'{self.CONSULTA_PRE_ANALISE_ENDPOINT}{self.SOLICITAR_ENDPOINT}'
@@ -30,11 +28,7 @@ class ConsultaPreAnaliseSolicitacao(ServicoSolicitacao, EndpointMixin):
             'numero_processo': self._numero_do_processo,
             'nome_parte': self._nome_parte,
             'nome_representante': self._nome_representante,
+            'oab': self._oab,
             'numero_documento_parte': self._numero_documento_parte,
-            'token': self._token,
         }
-        if self._oab:
-            form_params['oab_numero'] = self._oab.get('numero', '')
-            form_params['oab_letra'] = self._oab.get('letra', '')
-            form_params['oab_uf'] = self._oab.get('uf', '')
         return {'form_params': form_params}

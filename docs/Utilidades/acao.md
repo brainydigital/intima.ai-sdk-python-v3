@@ -22,4 +22,4 @@ TIPO_ANDAMENTO | 6
 TIPO_CONSULTA | 7
 TIPO_PRE_CONSULTA | 8
 
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

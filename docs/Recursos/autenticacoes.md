@@ -2,6 +2,10 @@
 
 > Os Autenticadores do `Intima.ai` são utilizados para ter acesso aos tribunais.
 > Você pode criar diversas autenticações para diversos tribunais sendo uma autenticação para cada tribunal.
+> No cadastro, `id_tribunal` aceita um id, uma lista (`[1, 2]`) ou um texto (`'1,2'`): a API cria uma autenticação para cada tribunal informado.
+>
+> Alguns tribunais exigem autenticação de dois fatores (2FA) no login. Para eles, informe a `secret` (Base32, mínimo de 16 caracteres) no cadastro ou depois, com [Armazenar 2FA](#armazenar-2fa-do-tribunal).
+> Alguns tribunais também exigem um certificado no login por usuário/senha: nesses casos, informe `id_certificado`.
 
 Todas as URIs são relativas a *https://app.intima.ai/api/v3*
 
@@ -107,7 +111,9 @@ try:
     usuario = 'usuario-novo-valor'         # Opcional se estiver alterando apenas a senha
     senha = 'senha-nova-valor'             # Opcional se estiver alterando apenas o usuário
 
-    autenticador = AutenticadorRegularAtualizacao(id_autenticador, usuario, senha)
+    id_certificado = None                  # Opcional; obrigatório nos tribunais que exigem certificado no login regular
+
+    autenticador = AutenticadorRegularAtualizacao(id_autenticador, usuario, senha, id_certificado)
 
     resultado = sdk.servicos.atualizar(autenticador)
 
@@ -116,6 +122,68 @@ except ExcecaoRequisicaoAPI as e:
     print(e.para_dict())
 except Exception as e:
     print(str(e))
+```
+
+#### Atualizar Perfil
+
+Exemplo para atualizar a sigla e/ou a descrição do perfil do autenticador. Informe pelo menos um dos dois.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.atualizar.autenticador.autenticador_perfil_atualizacao import AutenticadorPerfilAtualizacao
+
+try:
+    sdk = Intimai('api_token')
+
+    id_autenticador = 1  # ID do autenticador no Intima.ai
+
+    resultado = sdk.servicos.atualizar(AutenticadorPerfilAtualizacao(id_autenticador, 'ADV', 'Advogado'))
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
+```
+
+### **Situação**
+
+Exemplo para habilitar ou desabilitar um autenticador. Desabilitado, ele não solicita nenhuma ação até ser habilitado de novo. A API responde 422 se o autenticador já estiver na situação pedida.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.atualizar.autenticador.autenticador_habilitar_atualizacao import AutenticadorHabilitarAtualizacao
+from intimai.servicos.atualizar.autenticador.autenticador_desabilitar_atualizacao import AutenticadorDesabilitarAtualizacao
+
+try:
+    sdk = Intimai('api_token')
+
+    id_autenticador = 1  # ID do autenticador no Intima.ai
+
+    resultado = sdk.servicos.atualizar(AutenticadorHabilitarAtualizacao(id_autenticador))
+    # ou: sdk.servicos.atualizar(AutenticadorDesabilitarAtualizacao(id_autenticador))
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
+```
+
+### **Armazenar 2FA do tribunal**
+
+Exemplo para armazenar a `secret` do 2FA do tribunal em um ou mais autenticadores. A `secret` é a chave Base32 (letras A–Z e dígitos 2–7, mínimo de 16 caracteres) mostrada pelo tribunal ao configurar o app autenticador.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.cadastrar.autenticador.autenticador_dois_fatores_cadastro import AutenticadorDoisFatoresCadastro
+
+try:
+    sdk = Intimai('api_token')
+
+    ids_autenticadores = [1, 2]  # Um ID ou uma lista de IDs de autenticadores
+
+    resultado = sdk.servicos.cadastrar(AutenticadorDoisFatoresCadastro(ids_autenticadores, 'JBSWY3DPEHPK3PXP'))
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
 ```
 
 ### **Tipo**
@@ -137,7 +205,9 @@ try:
     usuario = 'usuario-valor'        # Usuário que será utilizado para acesso ao tribunal
     senha = 'senha-valor'            # Senha que será utilizada para acesso ao tribunal
 
-    autenticador = AutenticadorAlterarParaRegularAtualizacao(id_autenticador, usuario, senha)
+    id_certificado = None            # Opcional; obrigatório nos tribunais que exigem certificado no login regular
+
+    autenticador = AutenticadorAlterarParaRegularAtualizacao(id_autenticador, usuario, senha, id_certificado)
 
     resultado = sdk.servicos.atualizar(autenticador)
 
@@ -192,7 +262,14 @@ try:
     }
     id_certificado = 1
 
-    autenticador = AutenticadorCertificadoCadastro(id_tribunal, oab, id_certificado)
+    autenticador = AutenticadorCertificadoCadastro(
+        id_tribunal,             # Um ID ou uma lista: [1, 2]
+        oab,
+        id_certificado,
+        usuario_sigla=None,      # Opcional
+        usuario_descricao=None,  # Opcional
+        secret=None,             # Obrigatória se algum tribunal exigir 2FA
+    )
 
     resultado = sdk.servicos.cadastrar(autenticador)
 
@@ -223,7 +300,16 @@ try:
     usuario = 'usuario-valor'  # Usuário que será utilizado para acesso ao tribunal
     senha = 'senha-valor'      # Senha que será utilizada para acesso ao tribunal
 
-    autenticador = AutenticadorRegularCadastro(id_tribunal, oab, usuario, senha)
+    autenticador = AutenticadorRegularCadastro(
+        id_tribunal,             # Um ID ou uma lista: [1, 2]
+        oab,
+        usuario,
+        senha,
+        id_certificado=None,     # Obrigatório nos tribunais que exigem certificado no login regular
+        usuario_sigla=None,      # Opcional
+        usuario_descricao=None,  # Opcional
+        secret=None,             # Obrigatória se algum tribunal exigir 2FA
+    )
 
     resultado = sdk.servicos.cadastrar(autenticador)
 
@@ -263,7 +349,7 @@ try:
         Dia.SEXTA_FEIRA
     ]
 
-    # Horários no qual a captura será realizada
+    # Horários no qual a captura será realizada (no máximo 3)
     horarios_de_captura = [
         Horario.DEZ_HORAS,
         Horario.DEZOITO_HORAS
@@ -314,6 +400,26 @@ except Exception as e:
     print(str(e))
 ```
 
+#### Capturar Agora
+
+Exemplo para pedir uma captura de intimações fora dos horários agendados. A captura do autenticador precisa estar ativa; caso contrário, a API responde 422.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.solicitar.autenticador.autenticador_capturar_intimacoes_solicitacao import AutenticadorCapturarIntimacoesSolicitacao
+
+try:
+    sdk = Intimai('api_token')
+
+    id_autenticador = 1  # ID do autenticador no Intima.ai
+
+    resultado = sdk.servicos.solicitar(AutenticadorCapturarIntimacoesSolicitacao(id_autenticador))
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
+```
+
 [Voltar ao topo](#recurso-autenticações)
 [Voltar a lista da API](../../README.md#recursos)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

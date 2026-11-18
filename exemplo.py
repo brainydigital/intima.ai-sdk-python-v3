@@ -21,13 +21,21 @@ from intimai import (
     Polo,
     TipoDeclaracao,
     TipoSolicitacao,
+    StatusAcao,
+    SituacaoCapturaAgendada,
+    SituacaoNovaTentativa,
+    TipoCapturaAgendada,
 )
+from intimai.servicos.buscar.captura_agendada.captura_agendada_busca import CapturaAgendadaBusca
+from intimai.servicos.buscar.credito.credito_consumo_mensal_busca import CreditoConsumoMensalBusca
+from intimai.servicos.solicitar.acao.acao_confirmar_consulta_solicitacao import AcaoConfirmarConsultaSolicitacao
 
 # Servicos de BUSCAR
 from intimai.servicos.buscar.acao.acao_busca import AcaoBusca
 from intimai.servicos.buscar.andamento.andamento_busca import AndamentoBusca
 from intimai.servicos.buscar.autenticador.autenticador_busca import AutenticadorBusca
 from intimai.servicos.buscar.certificado.certificado_busca import CertificadoBusca
+from intimai.servicos.buscar.codigo_ajuda.codigo_ajuda_busca import CodigoAjudaBusca
 from intimai.servicos.buscar.consulta.consulta_busca import ConsultaBusca
 from intimai.servicos.buscar.credito.credito_saldo_busca import CreditoSaldoBusca
 from intimai.servicos.buscar.tribunal.tribunal_busca import TribunalBusca
@@ -97,6 +105,17 @@ def main():
             filtros={'filtros': {'nome': 'TJSP'}},
         )
         print('Tribunais:', resultado)
+
+        # Buscar um código de ajuda: diz se o erro tem nova tentativa automática
+        resultado = sdk.servicos.buscar(CodigoAjudaBusca(), 1, {'codigo': 606})
+        print('Código 606:', resultado['data']['grupos'][0]['codigos'][0]['nova_tentativa'])
+
+        # Ação com erro: se a nova tentativa for automática, não crie outra ação
+        nova_tentativa = sdk.servicos.buscar(AcaoBusca(id=1))['data']['nova_tentativa']
+        if nova_tentativa and nova_tentativa['automatica']:
+            print('Nova tentativa automática:', nova_tentativa['mensagem'])
+        elif nova_tentativa and nova_tentativa['situacao'] == SituacaoNovaTentativa.SEM_NOVA_TENTATIVA:
+            print('Sem nova tentativa: corrija a causa antes de criar outra ação')
 
         # ---------------------------------------------------------------
         # CADASTRAR exemplos
@@ -178,6 +197,20 @@ def main():
         )
         print('Consulta solicitada:', resultado)
 
+        if resultado['data']['status'] == StatusAcao.AGUARDANDO_CONFIRMACAO:
+            resultado = sdk.servicos.solicitar(AcaoConfirmarConsultaSolicitacao(resultado['data']['id']))
+            print('Consulta confirmada:', resultado)
+
+        resultado = sdk.servicos.buscar(CreditoConsumoMensalBusca(), 1, {'date': '2026-10'})
+        print('Consumo mensal:', resultado)
+
+        resultado = sdk.servicos.buscar(
+            CapturaAgendadaBusca(),
+            1,
+            {'tipos': TipoCapturaAgendada.INTIMACAO, 'situacoes': SituacaoCapturaAgendada.NAO_EXECUTADA},
+        )
+        print('Capturas não executadas:', resultado)
+
         # Solicitar copia processual
         resultado = sdk.servicos.solicitar(
             CopiaSolicitacao(
@@ -250,7 +283,7 @@ def main():
         print('Acao tentada novamente:', resultado)
 
     except ExcecaoRequisicaoAPI as e:
-        print(f'Erro na API (codigo {e.code}): {e}')
+        print(f'Erro na API (codigo {e.get_status()}): {e.get_mensagem()}')
         print('Detalhes:', e.para_dict())
 
 

@@ -4,4 +4,4 @@ from intimai.servicos.endpoint import EndpointMixin
 
 class TransacaoHistoricoBusca(ServicoBusca, EndpointMixin):
     def get_endpoint(self) -> str:
-        return f'{self.TRANSACAO_ENDPOINT}{self.HISTORICO_ENDPOINT}{self.BUSCAR_ENDPOINT}'
+        return f'{self.TRANSACAO_ENDPOINT}{self.HISTORICO_ENDPOINT}'

@@ -85,14 +85,14 @@ try:
     # Estes tipos estão disponíveis no tribunal em questão, você pode buscar o tribunal e verificar os valores disponíveis.
     tipo_documento_mensagem_geral = 1
 
-    # A petição é necessária para alguns tribunais (TRT por exemplo)
+    # A petição é obrigatória nos tribunais da Justiça do Trabalho (TRT) e proibida nos demais: fora do TRT, passe None e envie tudo em documentos.
     peticao = Peticao('caminho/da/peticao', 12, 'descricao-peticao')
 
     documentos = [
         Documento('caminho/do/documento', 1, 21, 'descricao-doc')
     ]
 
-    # Obs: se o tribunal não precisar da petição basta não enviar
+    # Obs: fora do TRT, use None no lugar de peticao
     protocolo = ProtocoloPjeSolicitacao(
         id_autenticador,
         numero_do_processo,
@@ -114,6 +114,26 @@ except Exception as e:
 
 Protocolos no sistema PROJUDI são realizados em uma única etapa.
 
+Antes de protocolar, busque os tipos de documento mensagem geral disponíveis para o autenticador. A API responde 422 se o autenticador não for do PROJUDI e 404 se o tribunal não tiver nenhum tipo.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.buscar.protocolo.tipo_documento_mensagem_geral.tipo_documento_mensagem_geral_projudi_busca import TipoDocumentoMensagemGeralProjudiBusca
+
+try:
+    sdk = Intimai('api_token')
+
+    id_autenticador = 1  # ID do autenticador no Intima.ai
+
+    resultado = sdk.servicos.buscar(TipoDocumentoMensagemGeralProjudiBusca(id_autenticador))
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
+```
+
+Depois, solicite o protocolo:
+
 ```python
 from intimai import Intimai, ExcecaoRequisicaoAPI
 from intimai.modelos.documento import Documento
@@ -125,7 +145,7 @@ try:
     id_autenticador = 1                          # ID do autenticador no Intima.ai
     numero_do_processo = '00000000000000000000'  # Número do processo no tribunal
 
-    # Estes tipos estão disponíveis no tribunal em questão, você pode buscar o tribunal e verificar os valores disponíveis.
+    # Um dos tipos devolvidos por TipoDocumentoMensagemGeralProjudiBusca
     tipo_documento_mensagem_geral = 1
 
     documentos = [
@@ -364,12 +384,16 @@ try:
         Documento('caminho/do/documento', 1, 21, 'descricao-doc')
     ]
 
+    # Obrigatório quando a classe escolhida tem categorias (veja as classes do protocolo)
+    id_categoria = None
+
     segunda_etapa = ProtocoloTjrjSegundoPassoSolicitacao(
         id_protocolo,
         id_classe,
         partes_vinculadas,
         peticao,
-        documentos
+        documentos,
+        id_categoria
     )
 
     resultado = sdk.servicos.solicitar(segunda_etapa)
@@ -383,4 +407,4 @@ except Exception as e:
 
 [Voltar ao topo](#recurso-protocolos)
 [Voltar a lista da API](../../README.md#recursos)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

@@ -1,3 +1,4 @@
+from intimai.modelos.parte_vinculada import ParteVinculada
 from intimai.servicos.solicitar.servico_solicitacao import ServicoSolicitacao
 from intimai.servicos.endpoint import EndpointMixin
 from intimai.servicos.helpers import HelpersMixin
@@ -7,11 +8,13 @@ class ProtocoloHabilitacaoPjeSegundoPassoSolicitacao(ServicoSolicitacao, Endpoin
     def __init__(
         self,
         id: int | str,
-        tipo_solicitacao,
-        tipo_declaracao,
-        polo,
+        tipo_solicitacao: int,
+        tipo_declaracao: int,
+        polo: int,
         partes_vinculadas: list,
         tipo_documento_mensagem_geral: int | str,
+        descricao: str = None,
+        mensagem_geral: str = None,
         documentos: list = None,
     ):
         self._id = id
@@ -20,6 +23,8 @@ class ProtocoloHabilitacaoPjeSegundoPassoSolicitacao(ServicoSolicitacao, Endpoin
         self._polo = polo
         self._partes_vinculadas = partes_vinculadas
         self._tipo_documento_mensagem_geral = tipo_documento_mensagem_geral
+        self._descricao = descricao
+        self._mensagem_geral = mensagem_geral
         self._documentos = documentos or []
 
     def get_endpoint(self) -> str:
@@ -31,7 +36,13 @@ class ProtocoloHabilitacaoPjeSegundoPassoSolicitacao(ServicoSolicitacao, Endpoin
             'tipo_declaracao': self._tipo_declaracao,
             'polo': self._polo,
             'tipo_documento_mensagem_geral': self._tipo_documento_mensagem_geral,
+            'descricao': self._descricao,
+            'mensagem_geral': self._mensagem_geral,
         }
-        self._definir_partes(self._partes_vinculadas, parametros)
+
+        for indice, parte in enumerate(self._partes_vinculadas):
+            parametros[f'partes_vinculadas[{indice}]'] = parte.get_nome() if isinstance(parte, ParteVinculada) else parte
+
         self._definir_documentos(self._documentos, parametros)
+
         return {'multipart': self._definir_multipart(parametros)}

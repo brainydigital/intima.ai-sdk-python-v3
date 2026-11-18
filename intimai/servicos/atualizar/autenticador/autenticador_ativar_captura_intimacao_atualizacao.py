@@ -11,7 +11,7 @@ class AutenticadorAtivarCapturaIntimacaoAtualizacao(ServicoAtualizacao, Endpoint
         self._capturar_procuradorias = capturar_procuradorias
 
     def get_endpoint(self) -> str:
-        return f'{self.AUTENTICADOR_ENDPOINT}/{self._id}{self.ATUALIZAR_ENDPOINT}'
+        return f'{self.AUTENTICADOR_ENDPOINT}/{self._id}/ativar-captura-intimacao'
 
     def get_request(self) -> dict:
         return {

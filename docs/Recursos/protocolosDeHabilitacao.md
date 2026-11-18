@@ -117,19 +117,24 @@ try:
     # Estes tipos estão disponíveis na classe TipoSolicitacao
     tipo_solicitacao = TipoSolicitacao.HABILITACAO_SIMPLES
 
-    # Estes tipos estão disponíveis na classe TipoDeclaracao
+    # Estes tipos estão disponíveis na classe TipoDeclaracao (constantes TRT_* para a Justiça do Trabalho)
     tipo_declaracao = TipoDeclaracao.DECLARACAO_SOB_PENA_DE_LEI
 
     # Estes polos estão disponíveis na classe Polo
     polo = Polo.ATIVO
 
-    # Array com as partes. Obs: a parte pode ter participação, verifique no tribunal
+    # Partes do polo escolhido: use o "nome" de cada parte em extra.processo_polos (polo_ativo ou polo_passivo)
+    # do protocolo de habilitação. Aceita ParteVinculada ou o nome direto.
     partes_vinculadas = [
-        ParteVinculada('nome-parte')
+        ParteVinculada('nome-parte'),
+        'outra-parte',
     ]
 
     # Estes tipos estão disponíveis no protocolo, você pode buscar o protocolo e verificar os valores disponíveis.
     tipo_documento_mensagem_geral = 1
+
+    descricao = 'descricao'            # Opcional
+    mensagem_geral = 'mensagem-geral'  # Opcional
 
     documentos = [
         Documento('caminho/do/documento', 1, 21, 'descricao-doc')
@@ -142,6 +147,8 @@ try:
         polo,
         partes_vinculadas,
         tipo_documento_mensagem_geral,
+        descricao,
+        mensagem_geral,
         documentos
     )
 
@@ -156,4 +163,4 @@ except Exception as e:
 
 [Voltar ao topo](#recurso-protocolos-de-habilitação)
 [Voltar a lista da API](../../README.md#recursos)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)

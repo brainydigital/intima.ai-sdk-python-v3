@@ -22,8 +22,5 @@ class HelpersMixin:
     def _definir_multipart(self, parametros: dict) -> list:
         multipart = []
         for nome, conteudo in parametros.items():
-            item = {'name': nome, 'contents': conteudo}
-            if hasattr(conteudo, 'read'):
-                item['filename'] = nome
-            multipart.append(item)
+            multipart.append({'name': nome, 'contents': conteudo})
         return multipart

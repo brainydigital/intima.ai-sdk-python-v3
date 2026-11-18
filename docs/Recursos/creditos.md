@@ -72,6 +72,24 @@ except Exception as e:
     print(str(e))
 ```
 
+### Consumo mensal
+
+Exemplo para buscar o consumo de créditos de um mês, agrupado por tipo de ação. O filtro `date` usa o formato `YYYY-MM`; sem ele, a API usa o mês atual.
+
+```python
+from intimai import Intimai, ExcecaoRequisicaoAPI
+from intimai.servicos.buscar.credito.credito_consumo_mensal_busca import CreditoConsumoMensalBusca
+
+try:
+    sdk = Intimai('api_token')
+
+    resultado = sdk.servicos.buscar(CreditoConsumoMensalBusca(), 1, {'date': '2026-10'})
+
+    print(resultado)
+except ExcecaoRequisicaoAPI as e:
+    print(e.get_status(), e.get_mensagem())
+```
+
 [Voltar ao topo](#recurso-créditos)
 [Voltar a lista da API](../../README.md#recursos)
-[Voltar para o README](../../README.md#intimaai---sdk-v3-python)
+[Voltar para o README](../../README.md#intimaai--sdk-v3-python)
